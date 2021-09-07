@@ -24,10 +24,10 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         titleLabel.text = showData?.title
         typeLabel.text = showData?.type
-        episodesLabel.text = String(showData!.episodes)
+        episodesLabel.text = String(format: "無資料", showData!.episodes ?? "")
         startDateLabel.text = showData?.start_date
         endDateLabel.text = showData?.end_date
-        scoreLael.text = String(showData!.score)
+        scoreLael.text = String(format: "無資料", showData!.score ?? "")
        
         if let urlStr = URL(string: showData?.image_url ?? "") {
                 URLSession.shared.dataTask(with: urlStr) { (data, response, error) in

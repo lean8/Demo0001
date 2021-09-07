@@ -36,6 +36,7 @@ class ViewController: UIViewController {
         
         myTableView.delegate = self
         myTableView.dataSource = self
+        scrollViewDidScroll(myTableView)
     }
     
     // MARK: - Setup View
@@ -87,4 +88,17 @@ extension ViewController: UITableViewDataSource{
         return cell
     }
   
+    //偵測是否滑到底部
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height)) {
+            let anonymousFunction = { (fetchShowList: [ShowData]) in
+                DispatchQueue.main.async {
+                    ShowAPI.shared.page += 1
+                    self.showList.append(contentsOf: fetchShowList)
+                }
+            }
+            myTableView.reloadData()
+            ShowAPI.shared.fetchShowList(onCompletion: anonymousFunction)
+        }
+    }
 }

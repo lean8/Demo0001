@@ -10,9 +10,9 @@ import Foundation
 
 final class ShowAPI {
     static let shared = ShowAPI()
-    
+    var page = 1
     func fetchShowList(onCompletion: @escaping ([ShowData]) -> ()) {
-        let urlString = "https://api.jikan.moe/v3/top/anime"
+        let urlString = "https://api.jikan.moe/v3/top/anime/\(page)"
         let url = URL(string: urlString)!
         
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -32,26 +32,24 @@ final class ShowAPI {
 }
 
  struct ShowList: Codable{
-    
 //    let request_hash: String
 //    let request_cached: Bool
 //    let request_cache_expiry: Int
-    
      let top: [ShowData]
 }
 
  struct ShowData: Codable {
-     let mal_id: Int
-     let image_url: String
-     let title: String
-     let score: Double
-     let rank: Int
-     let url: String
-     let type: String
-     let start_date: String
-     let end_date: String
-     let members: Int
-     let episodes: Int
+     let mal_id: Int?
+     let image_url: String?
+     let title: String?
+     let score: Double?
+     let rank: Int?
+     let url: String?
+     let type: String?
+     let start_date: String?
+     let end_date: String?
+     let members: Int?
+     let episodes: Int?
 }
 
 

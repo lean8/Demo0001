@@ -27,7 +27,7 @@ class ShowTableViewCell: UITableViewCell {
 
     func setcell() {
             titleLabel.text = showData?.title
-            scoreLabel.text = showData?.score.description
+            scoreLabel.text = showData?.score?.description
         if let urlStr = URL(string: showData?.image_url ?? "") {
                 URLSession.shared.dataTask(with: urlStr) { (data, response, error) in
                     if let data = data {
