@@ -14,6 +14,7 @@ class ShowTableViewCell: UITableViewCell {
     @IBOutlet var showImageView: UIImageView!
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var scoreLabel: UILabel!
+   
     override func awakeFromNib() {
         super.awakeFromNib()
 //        setcell()
@@ -21,10 +22,8 @@ class ShowTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
-
+    
     func setcell() {
             titleLabel.text = showData?.title
             scoreLabel.text = showData?.score?.description
@@ -34,6 +33,7 @@ class ShowTableViewCell: UITableViewCell {
                         DispatchQueue.main.async {
                             // 得到圖片
                             self.showImageView.image = UIImage(data: data)
+                            self.showImageView.contentMode = .center
                         }
                     }
                 }.resume()
