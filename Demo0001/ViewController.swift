@@ -8,20 +8,15 @@
 import UIKit
 
 class ViewController: UIViewController {
-    @IBOutlet var myTableView: UITableView!
-    
-    let tableView = UITableView()
+    let myTableView = UITableView()
     var safeArea: UILayoutGuide!
     var showList: [ShowData] = []
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         safeArea = view.safeAreaLayoutGuide
-//        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-//        setupTableView()
-        
+        setupTableView()
         let anonymousFunction = { (fetchShowList: [ShowData]) in
             DispatchQueue.main.async {
                 self.showList = fetchShowList
@@ -30,10 +25,10 @@ class ViewController: UIViewController {
         }
         
         ShowAPI.shared.fetchShowList(onCompletion: anonymousFunction)
-        
-//        tableView.delegate = self
-//        tableView.dataSource = self
-        
+        let nib = UINib(nibName: "ShowTableViewCell", bundle: nil)
+        myTableView.rowHeight = 120
+        myTableView.estimatedRowHeight = 120
+        myTableView.register(nib, forCellReuseIdentifier: "ShowTableViewCell")
         myTableView.delegate = self
         myTableView.dataSource = self
         scrollViewDidScroll(myTableView)
@@ -41,13 +36,12 @@ class ViewController: UIViewController {
     
     // MARK: - Setup View
     func setupTableView() {
-        view.addSubview(tableView)
-        
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: safeArea.topAnchor).isActive = true
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        view.addSubview(myTableView)
+        myTableView.translatesAutoresizingMaskIntoConstraints = false
+        myTableView.topAnchor.constraint(equalTo: safeArea.topAnchor).isActive = true
+        myTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        myTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        myTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
     }
 }
 //MARK: - UITableViewDataSource
@@ -55,7 +49,9 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("You tapped me")
-//      performSegue(withIdentifier: "showDetail", sender: self)
+//        let vc = self.storyboard?.instantiateViewController(identifier: "showDetail") as! DetailViewController
+        performSegue(withIdentifier: "showDetail", sender: self)
+//        present(vc, animated: true, completion: nil)
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail"{
@@ -79,7 +75,7 @@ extension ViewController: UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ShowTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ShowTableViewCell", for: indexPath) as! ShowTableViewCell
         
 //        let showData = showList[indexPath.row]
 //        cell.textLabel?.text = showData.title
